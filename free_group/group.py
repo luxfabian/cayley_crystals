@@ -17,8 +17,7 @@ b = np.array([[1, 0], [2, 1]], dtype=int)
 A = np.array([[1, -2], [0, 1]], dtype=int)
 B = np.array([[1, 0], [-2, 1]], dtype=int)
 
-# generators =  np.array( [a,b,A,B] , dtype=int)
-generators = np.array([a, b], dtype=int)
+generators = np.array([a, b, A, B], dtype=int)
 
 
 def mult(h, g, N):
