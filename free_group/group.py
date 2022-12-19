@@ -2,7 +2,8 @@
     ./free_group/group.py
 
     Author: Fabian R. Lux
-    Mail:  fabian.lux@yu.edu
+    Date:   12/19/2022
+    Mail:   fabian.lux@yu.edu
 
     Implements basic group structure of the free group.
     a,b are the generators; A,B their resp. inverses.
