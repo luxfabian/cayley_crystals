@@ -1,7 +1,7 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
-SetDirectory[NotebookDirectory[]];
+SetDirectory[If[$Notebooks, NotebookDirectory[], Directory[] ]];
 
 
 data=Import["coset_tables.csv", "Text"];
@@ -27,7 +27,7 @@ Export["./output/taxonomy.png", bc, ImageResolution -> 300]
 
 
 (* ::Text:: *)
-(*Index of free group generators*)
+(*Index of free group generators (position of generators in basis set)*)
 
 
 a = 1; 
@@ -48,11 +48,12 @@ CayleyGraphF2[sg_]:= GraphPlot[PureGraphF2[sg] ,GraphLayout->"SpringElectricalEm
 CayleyGraphF23D[sg_]:= GraphPlot3D[ PureGraphF2[sg],GraphLayout->"SpringElectricalEmbedding"]
 
 
-FindCycle[g,{1}]
-
-
 g = PureGraphF2[1];
 HighlightGraph[g, FindCycle[ g,1 ] ]
+
+
+(* ::Text:: *)
+(*Matrix representation of the generators*)
 
 
 MatRepresent[op_, sg_]:=(
@@ -66,13 +67,29 @@ MatRepresent[op_, sg_]:=(
 );
 
 
+(* ::Text:: *)
+(*Definition of the Hamiltonian:*)
+
+
 Hamiltonian[sg_]:= Sum[ MatRepresent[i,sg],{i,1,4}]
+
+
+(* ::Text:: *)
+(*and its spectrum:*)
 
 
 Spectrum[sg_] :=Sort[Eigenvalues[Hamiltonian[sg]]]
 
 
+(* ::Text:: *)
+(*The integrated density of states can be computed from the spectrum as*)
+
+
 IDS[\[Mu]_, spec_]:= N[ Count[  # < \[Mu] &/@ spec, True]/ Length[spec] ] 
+
+
+(* ::Text:: *)
+(*For the purposes of plotting the IDS, we define*)
 
 
 pts = 1000;
@@ -84,10 +101,10 @@ ids[spec_]:= Transpose[{\[Mu]s, IDS[#,spec]&/@\[Mu]s}];
 PlotSpectrum[sg_]:=ListLinePlot[
 	ids[Spectrum[sg]] ,
 	Frame-> True, 
-	FrameLabel->{"\[Mu]","IDS"},
-	(*PlotLabel-> "\!\(\*SubscriptBox[\(F\), \(2\)]\)/H = "<>Classification[[sg]],*)
-	FrameStyle->16,
-	LabelStyle->16
+	FrameLabel->{"x","F(x)"},
+	PlotLabel-> "\!\(\*SubscriptBox[\(F\), \(2\)]\)/H = "<>Classification[[sg]],
+	FrameStyle->20,
+	LabelStyle->20
 ] 
 
 
@@ -104,28 +121,38 @@ Analyze3D[sg_]:=(
 )
 
 
+gfx=Analyze[#]&/@ Range[Length[CosetTable]];
 
 
-
-indices= DeleteCases[If[  Classification[[#]]!= "C"<>ToString[Length[CosetTable[[1]][[1]]]], #,None]&/@ Range[Length[CosetTable]] ,None]
-
-
-(*plots = Analyze[#] &/@ Range[Length[CosetTable]] ;*)
+(* ::Text:: *)
+(*Indices for which the factor group is isomorphic to SL(2,3)*)
 
 
-indices= DeleteCases[If[  Classification[[#]]== "SL(2,3)", #,None]&/@ Range[Length[CosetTable]] ,None]
+SL23indices= DeleteCases[If[  Classification[[#]]== "SL(2,3)", #,None]&/@ Range[Length[CosetTable]] ,None]
 
 
-gfx=Analyze[#]&/@ indices ;
+(* ::Text:: *)
+(*Adapt plotting for this case:*)
+
+
+PlotSpectrum[sg_]:=ListLinePlot[
+	ids[Spectrum[sg]] ,
+	Frame-> True, 
+	FrameLabel->{"x","F(x)"},
+	FrameStyle->30,
+	LabelStyle->30
+] 
+
+Analyze[sg_]:=(
+	gfx = GraphicsGrid[{{ CayleyGraphF2[sg]}, {PlotSpectrum[sg] }}];
+	Return[gfx];
+)
+
+
+gfx=Analyze[#]&/@ SL23indices;
 
 
 spec=Grid[ ArrayReshape[gfx,{4,4}] ];
 
 
 Export["./output/SL(2,3).png",spec,ImageResolution-> 300];
-
-
-GraphicsGrid[ ArrayReshape[gfx,{4,4}] ]
-
-
-Length[indices]
