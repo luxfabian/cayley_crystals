@@ -17,7 +17,7 @@ bc=BarChart[
 	ChartLabels -> Automatic, 
 	BarOrigin->Left,
 	LabelStyle->12,
-	ImageSize->300, 
+	ImageSize->500, 
 	AspectRatio->2, 
 	ColorFunction->"DarkBands", 
 	GridLines->Automatic,
