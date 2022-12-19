@@ -4,11 +4,11 @@
 SetDirectory[If[$Notebooks, NotebookDirectory[], Directory[] ]];
 
 
-data=Import["coset_tables.csv", "Text"];
+data=Import["./output/coset_tables.csv", "Text"];
 CosetTable =ToExpression[ StringReplace[data,{ "[" -> "{", "]" -> "}"} ] ] ;
 
 
-data = Import["quotients.csv","Text"];
+data = Import["./output/quotients.csv","Text"];
 Classification =ToExpression[ StringReplace[data,{ "[" -> "{", "]" -> "}"} ] ] ;
 
 
@@ -140,7 +140,8 @@ PlotSpectrum[sg_]:=ListLinePlot[
 	Frame-> True, 
 	FrameLabel->{"x","F(x)"},
 	FrameStyle->30,
-	LabelStyle->30
+	LabelStyle->30,
+	PlotLabel-> Style[ Classification[[sg]], 22]
 ] 
 
 Analyze[sg_]:=(
@@ -149,10 +150,25 @@ Analyze[sg_]:=(
 )
 
 
-gfx=Analyze[#]&/@ SL23indices;
+(* ::Text:: *)
+(*Choose random subset*)
+
+
+indices = RandomInteger[{1,Length[CosetTable]}] &/@ Range[16] 
+
+
+(* ::Text:: *)
+(*Except for the following case (gives reproducible figure for index 32)*)
+
+
+If[ Length[CosetTable] == 151,
+indices = {58,11,45,14,24,84,110,47,59,23,144,28,142,86,102,15}];
+
+
+gfx=Analyze[#]&/@ indices;
 
 
 spec=Grid[ ArrayReshape[gfx,{4,4}] ];
 
 
-Export["./output/SL(2,3).png",spec,ImageResolution-> 300];
+Export["./output/kaleidoscope.png",spec,ImageResolution-> 300];

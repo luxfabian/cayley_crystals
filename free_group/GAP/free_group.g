@@ -11,7 +11,7 @@ G := FreeGroup("a","b");
 Display(G);
 
 # -----------------------------------------------------------
-n := 24;
+n := 32;
 Display("Generating normal subgroups up to index:");
 Display(n);
 
@@ -31,8 +31,8 @@ quotient_relations := List( subgroups, node -> FactorGroup(G,node));
 # calculate the group action on the quotient space
 coset_tables := List( subgroups, node -> CosetTable(G,node));
 
-PrintTo("coset_tables.csv", coset_tables);
-Display("Coset tables have been stored to ./coset_tables.csv");
-PrintTo("quotients.csv", quotients);
-Display("Classification of factor groups has been stored to ./quotients.csv");
+PrintTo("./output/coset_tables.csv", coset_tables);
+Display("Coset tables have been stored to ./output/coset_tables.csv");
+PrintTo("./output/quotients.csv", quotients);
+Display("Classification of factor groups has been stored to ./output/quotients.csv");
 
