@@ -76,7 +76,7 @@ np.save('./lexikon.npy', lexikon)
 plt.plot(lens, 'o')
 
 plt.title(
-    r"Iterative factor group generation $M_2(\mathbb{Z}/p^n\mathbb{Z})$ with p="
+    r"Iterative factor group generation $M_2(\mathbb{Z}/p^N\mathbb{Z})$ with p="
     + str(input.p)
     + " and N="
     +str(input.N)
