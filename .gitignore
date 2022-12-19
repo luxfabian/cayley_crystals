@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+basis_search.png
+spectrum.png
+spectrum.dat
+
 # do not store binary
 *.npy
 
