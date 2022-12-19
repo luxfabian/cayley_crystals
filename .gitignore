@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# do not store binary
+*.npy
+
 # C extensions
 *.so
 
