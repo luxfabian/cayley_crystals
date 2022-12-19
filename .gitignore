@@ -6,6 +6,7 @@ __pycache__/
 basis_search.png
 spectrum.png
 spectrum.dat
+lexikon.txt
 
 # do not store binary
 *.npy
