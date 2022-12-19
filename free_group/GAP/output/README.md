@@ -1,0 +1,1 @@
+Output will be stored to this folder. The scripts will run into errors if this folder is not there.
