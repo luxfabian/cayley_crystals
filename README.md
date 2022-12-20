@@ -1,4 +1,8 @@
 # Spectral and Combinatorial Aspects of Cayley Crystals
+Fabian R. Lux<sup>1</sup> and Emil Prodan<sup>1</sup><br />
+<sup>1</sup>*Department of Physics and, Department of Mathematical Sciences, Yeshiva University, New York, NY 10016, USA*
+
+DOI: [10.13140/RG.2.2.12735.59040](http://dx.doi.org/10.13140/RG.2.2.12735.59040)
 
 This is a repository for code, related to our paper on the "Spectral and Combinatorial Aspects of Cayley Crystals".
 
