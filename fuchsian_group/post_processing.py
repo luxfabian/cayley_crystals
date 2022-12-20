@@ -1,5 +1,5 @@
 """
-    ./fuchsian/post_processing.py
+    ./fuchsian_group/post_processing.py
 
     Author: Fabian R. Lux
     Date:   12/19/2022

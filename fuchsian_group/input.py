@@ -1,5 +1,5 @@
 """
-    ./fuchsian/input.py
+    ./fuchsian_group/input.py
 
     Author: Fabian R. Lux
     Date:   12/19/2022
