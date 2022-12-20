@@ -48,7 +48,7 @@ plt.plot(Es, IDS_dat_exact, '--', label=r'Exact')
 
 
 
-plt.title(f'$p$= {input.p}, $N$={input.N}, dim $H_N$={len(spectrum)}')
+plt.title(f'$p$={input.p}, $N$={input.N}, dim $H_N$={len(spectrum)}')
 
 plt.legend()
 ax = plt.gca()
