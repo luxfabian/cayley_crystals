@@ -50,28 +50,24 @@ def kpm_solver():
     for g in H_operators:
         H += represent(g)
 
-    scale = 8 # this number has to be such that max(|eigenvalues|)/scale < 1
-    npol = 300 # number of polynomials, energy resolution goes as 1/npol
-    ne = 300 # number of energies to calculate (between -scale and scale)
-    ntries = 5 # number of random vectors used
-    # returns energies and dos
+    (E,dos) = kpm.density_of_states(H, scale=8, n_moments=300, n_energies=300, kernel="jackson",
+         n_random_states=5, epsilon = 0.01)
 
-    # (x1,y1) = kpm.tdos(H,ntries=ntries,scale=scale,npol=npol,ne=ne) 
+    # -- numerical integration of DOS
+    ids = np.cumsum(dos)
+    ids = scipy.integrate.cumulative_trapezoid(dos, E, initial=0)
 
-    (x1,y1) = kpm.density_of_states(H, scale=scale, n_moments=npol, n_energies=ne, kernel="jackson",
-         n_random_states=ntries, epsilon = 0.01)
+    # -- normalization
+    ids = ids / ids[-1]
 
-    y1 = np.cumsum(y1)
-    y1 = y1 / y1[-1]
+    np.save('./energy.npy', E)
+    np.save('./ids.npy', ids)
 
-    np.save('./energy.npy', x1)
-    np.save('./ids.npy', y1)
-
-    plt.plot(x1,y1) # plot this dos
+    plt.plot(E,ids) # plot this dos
     plt.title(r'Kernel polynomial method for $p=2$, $N=6$ and $p^N=64$')
     ax = plt.gca()
-    ax.set_xlabel(r'$x$')
-    ax.set_ylabel(r'$F(x)$')
+    ax.set_xlabel(r'$\mu$')
+    ax.set_ylabel(r'IDS($\mu$)')
     plt.grid()
     plt.savefig('./spec.png', dpi=300)
     plt.show()
