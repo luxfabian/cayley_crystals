@@ -1,57 +1,17 @@
-import json
-import sys
-import numpy as np
-import matplotlib.pyplot as plt
-import kpm
-import matplotlib.pyplot as plt
-
 import scipy
+import numpy as np
+import matplotlib.pylab as plt
 
-import input
-from fuchsian import *
+import kpm
 
+# -- load Hamiltonian
+H = scipy.sparse.load_npz('./hamiltonian.npz')
 
-# --  initialize basis objects
-
-with open('./lexikon.json', 'r') as file:
-    json_data = json.load(file)
-
-basis = [Fuchsian(word=f['word'], n=f['n'])%(input.p**input.N) for f in json_data]
-d = len(basis)
-
-hashed_basis = [b.hash for b in basis]
-
-dict_basis = {}
-
-for i in range(len(basis)):
-    dict_basis[str(hashed_basis[i])] = i
-
-def represent(op):
+def IDS(E, dos):
     """
-        op: integer index of the operator in the basis
+        Calculates the integrated density of states from the DOS.
+        Uses the trapezoidal rule on the energy mesh defined by E.
     """
-
-    representation = scipy.sparse.lil_matrix((d, d), dtype=complex)
-    for j in range(d):
-        c = (op*basis[j]) % (input.p**input.N)
-
-        i = dict_basis[str(c.hash)]
-
-        representation[i, j] = 1
-
-    return representation
-
-
-def kpm_solver():
-
-    H = scipy.sparse.csr_matrix((d, d), dtype=complex)
-    H_operators = [ Fuchsian(word=[w]) for w in generators ]
-
-    for g in H_operators:
-        H += represent(g)
-
-    (E,dos) = kpm.density_of_states(H, scale=8, n_moments=300, n_energies=300, kernel="jackson",
-         n_random_states=5, epsilon = 0.01)
 
     # -- numerical integration of DOS
     ids = np.cumsum(dos)
@@ -60,10 +20,22 @@ def kpm_solver():
     # -- normalization
     ids = ids / ids[-1]
 
-    np.save('./energy.npy', E)
-    np.save('./ids.npy', ids)
+    return ids
 
-    plt.plot(E,ids) # plot this dos
+
+def spectrum():
+
+    n_moments = 256
+    epsilon = 1e-4
+    n_random_states=50
+    n_energies = 1000
+
+    (E,dos) = kpm.density_of_states(H, scale=8, n_moments=n_moments, n_energies=n_energies, kernel="jackson",
+            n_random_states=n_random_states, epsilon = epsilon)
+
+    ids = IDS(E, dos)
+
+    plt.plot(E,ids)
     plt.title(r'Kernel polynomial method for $p=2$, $N=6$ and $p^N=64$')
     ax = plt.gca()
     ax.set_xlabel(r'$\mu$')
@@ -72,9 +44,11 @@ def kpm_solver():
     plt.savefig('./spec.png', dpi=300)
     plt.show()
 
+    np.save('./energy.npy', E)
+    np.save('./ids.npy', ids)
+    np.save('./dos.npy', dos)
+
 
 if __name__ == "__main__":
-    kpm_solver()
-
-
+    spectrum()
     
