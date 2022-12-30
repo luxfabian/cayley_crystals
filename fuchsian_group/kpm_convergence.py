@@ -1,5 +1,5 @@
 """
-    ./fuchsian_group/kpm_spectrum.py
+    ./fuchsian_group/kpm_convergence.py
 
     Author: Fabian R. Lux
     Date:   12/19/2022
