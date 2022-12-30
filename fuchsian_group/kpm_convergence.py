@@ -1,3 +1,14 @@
+"""
+    ./fuchsian_group/kpm_spectrum.py
+
+    Author: Fabian R. Lux
+    Date:   12/19/2022
+    Mail:   fabian.lux@yu.edu
+
+    Loads the Hamiltionian from file and observes the convergence of
+    the density of states as determined by the kernel polynomial 
+    method.
+"""
 import scipy
 import numpy as np
 import matplotlib.pylab as plt
@@ -6,6 +17,7 @@ import kpm
 
 # -- load Hamiltonian
 H = scipy.sparse.load_npz('./hamiltonian.npz')
+
 
 def IDS(E, dos):
     """
@@ -25,13 +37,13 @@ def IDS(E, dos):
 
 def convergence_vs_moments():
 
-    moments = [2**n for n in range(1,10)]
+    moments = [2**n for n in range(1, 10)]
 
     epsilon = 1e-4
-    n_random_states=20
+    n_random_states = 20
 
-    (E,dos) = kpm.density_of_states(H, scale=8, n_moments=1, n_energies=300, kernel="jackson",
-            n_random_states=n_random_states, epsilon = epsilon)
+    (E, dos) = kpm.density_of_states(H, scale=8, n_moments=1, n_energies=300, kernel="jackson",
+                                     n_random_states=n_random_states, epsilon=epsilon)
 
     ids_prev = IDS(E, dos)
 
@@ -39,18 +51,16 @@ def convergence_vs_moments():
     for n in moments:
 
         (E, dos) = kpm.density_of_states(H, scale=8, n_moments=n, n_energies=300, kernel="jackson",
-            n_random_states=n_random_states, epsilon = epsilon)
+                                         n_random_states=n_random_states, epsilon=epsilon)
 
-        ids_next = IDS(E,dos)
+        ids_next = IDS(E, dos)
 
-        error = np.mean( (ids_prev - ids_next)**2 ) 
+        error = np.mean((ids_prev - ids_next)**2)
         errors.append(error)
 
         ids_prev = ids_next
 
-        
-
-    plt.plot(moments,errors,'o') # plot this dos
+    plt.plot(moments, errors, 'o')  # plot this dos
 
     #plt.title(r'Kernel polynomial method for $p=2$, $N=6$ and $p^N=64$')
     ax = plt.gca()
@@ -69,10 +79,10 @@ def convergence_vs_random_vecs():
 
     epsilon = 1e-4
 
-    n_random_states= [5,10,20,50,100,200]
+    n_random_states = [5, 10, 20, 50, 100, 200]
 
-    (E,dos) = kpm.density_of_states(H, scale=8, n_moments=n_moments, n_energies=300, kernel="jackson",
-            n_random_states=1, epsilon = epsilon)
+    (E, dos) = kpm.density_of_states(H, scale=8, n_moments=n_moments, n_energies=300, kernel="jackson",
+                                     n_random_states=1, epsilon=epsilon)
 
     ids_prev = IDS(E, dos)
 
@@ -80,18 +90,16 @@ def convergence_vs_random_vecs():
     for n in n_random_states:
 
         (E, dos) = kpm.density_of_states(H, scale=8, n_moments=n_moments, n_energies=300, kernel="jackson",
-            n_random_states=n, epsilon = epsilon)
+                                         n_random_states=n, epsilon=epsilon)
 
-        ids_next = IDS(E,dos)
+        ids_next = IDS(E, dos)
 
-        error = np.mean( (ids_prev - ids_next)**2 ) 
+        error = np.mean((ids_prev - ids_next)**2)
         errors.append(error)
 
         ids_prev = ids_next
 
-        
-
-    plt.plot(n_random_states,errors,'o') # plot this dos
+    plt.plot(n_random_states, errors, 'o')  # plot this dos
 
     #plt.title(r'Kernel polynomial method for $p=2$, $N=6$ and $p^N=64$')
     ax = plt.gca()
@@ -104,9 +112,6 @@ def convergence_vs_random_vecs():
     plt.show()
 
 
-
-
 if __name__ == "__main__":
     convergence_vs_moments()
     convergence_vs_random_vecs()
-
