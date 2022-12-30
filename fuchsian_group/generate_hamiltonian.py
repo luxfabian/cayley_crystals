@@ -1,3 +1,14 @@
+"""
+    ./fuchsian_group/generate_hamiltonian.py
+
+    Author: Fabian R. Lux
+    Date:   12/30/2022
+    Mail:   fabian.lux@yu.edu
+
+    Construct the Laplace operator on the Fuchsian group lattice and
+    stores the result.
+"""
+
 import json
 import scipy
 
@@ -5,7 +16,6 @@ import input
 from fuchsian import *
 
 # --  initialize basis objects
-
 with open('./lexikon.json', 'r') as file:
     json_data = json.load(file)
 
