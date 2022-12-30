@@ -9,4 +9,4 @@
     The approximations come about by modding w.r.t p**N
 """
 p = 2
-N = 3
+N = 6

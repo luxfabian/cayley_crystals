@@ -1,3 +1,13 @@
+"""
+    ./fuchsian_group/kpm_spectrum.py
+
+    Author: Fabian R. Lux
+    Date:   12/19/2022
+    Mail:   fabian.lux@yu.edu
+
+    Loads the Hamiltonian from file and calculates the density of
+    states using the kernel polynomial method.
+"""
 import scipy
 import numpy as np
 import matplotlib.pylab as plt
@@ -6,6 +16,7 @@ import kpm
 
 # -- load Hamiltonian
 H = scipy.sparse.load_npz('./hamiltonian.npz')
+
 
 def IDS(E, dos):
     """
@@ -25,17 +36,17 @@ def IDS(E, dos):
 
 def spectrum():
 
-    n_moments = 256
+    n_moments = 512
     epsilon = 1e-4
-    n_random_states=50
-    n_energies = 1000
+    n_random_states = 100
+    n_energies = 10000
 
-    (E,dos) = kpm.density_of_states(H, scale=8, n_moments=n_moments, n_energies=n_energies, kernel="jackson",
-            n_random_states=n_random_states, epsilon = epsilon)
+    (E, dos) = kpm.density_of_states(H, scale=8, n_moments=n_moments, n_energies=n_energies, kernel="jackson",
+                                     n_random_states=n_random_states, epsilon=epsilon)
 
     ids = IDS(E, dos)
 
-    plt.plot(E,ids)
+    plt.plot(E, ids)
     plt.title(r'Kernel polynomial method for $p=2$, $N=6$ and $p^N=64$')
     ax = plt.gca()
     ax.set_xlabel(r'$\mu$')
@@ -51,4 +62,3 @@ def spectrum():
 
 if __name__ == "__main__":
     spectrum()
-    
