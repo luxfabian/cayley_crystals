@@ -51,10 +51,7 @@ def impose_periodic_boundary_condition(denominator):
         def candidates(prev_generation_local):
 
             candidates_local = []
-            hashed_lexikon_local  = hashed_lexikon
-
-            # for g in generators:
-            #     candidates = (g*prev_generation_local) % denominator
+            hashed_lexikon_local  = hashed_lexikon.copy()
 
             for b in prev_generation_local:
                 for g in generators:
