@@ -9,8 +9,14 @@ spectrum.dat
 lexikon.txt
 lexikon.json
 
+*.dat
+*.png
+*.txt
+*.json
+
 # do not store binary
 *.npy
+*.npz
 
 # C extensions
 *.so
