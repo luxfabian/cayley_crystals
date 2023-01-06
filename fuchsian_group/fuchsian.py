@@ -5,7 +5,7 @@
     Date:   12/19/2022
     Mail:   fabian.lux@yu.edu
 
-    Defines the Fuchsian group of genus 2 according following the work of
+    Defines a faithful representation of the Fuchsian group of genus 2 in accordnace with the work of
     Maskit, Proc. Am. Math. Soc. 127 3643-3652 (1999).
 """
 import numpy as np
