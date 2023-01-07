@@ -14,10 +14,15 @@ import numpy as np
 class F():
 
     def __init__(self, a, b):
+        # -- Z
         self.a = a
+        # -- Z √3
         self.b = b
 
     def __repr__(self):
+        """
+            Pretty printing of the number
+        """
 
         if self.b == 0:
             return str(self.a)
@@ -33,6 +38,9 @@ class F():
                 return '(' + str(self.a) + ' + ' + str(self.b) + '√3)'
 
     def __mul__(self, other):
+        """
+            Multiplication operator
+        """
 
         a = self.a * other.a + 3 * self.b * other.b
         b = self.a * other.b + self.b * other.a
@@ -40,22 +48,41 @@ class F():
         return F(a, b)
 
     def __add__(self, other):
+        """
+            Addition operator
+        """
         return F(self.a + other.a, self.b + other.b)
 
     def __mod__(self, k):
+        """
+            Modulo operator
+        """
         return F(self.a % k, self.b % k)
 
     def __eq__(self, other):
+        """
+            Equality operator
+        """
         return self.a == other.a and self.b == other.b
 
     def __ne__(self, other):
+        """
+            Inequality operator
+        """
         return self.a != other.a or self.b != other.b
 
     def __float__(self):
+        """
+            Conversion to float
+        """
         return float(self.a + self.b * np.sqrt(3))
 
 
 if __name__ == '__main__':
+
+    """
+        Some examples
+    """
 
     print(F(0, 1), 'x', F(0, 1), '=', F(0, 1)*F(0, 1))
 
