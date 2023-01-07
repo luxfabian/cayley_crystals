@@ -13,9 +13,13 @@ from field import F
 
 Γ = {}
 
+# -- labels of the Fuchsian group generators
 generators = ['a₁', 'a₂', 'b₁', 'b₂', 'a₁⁻¹', 'a₂⁻¹', 'b₁⁻¹', 'b₂⁻¹']
+
+# -- Labels for the corresponding inverse operations
 inverse_generators = ['a₁⁻¹', 'a₂⁻¹', 'b₁⁻¹', 'b₂⁻¹', 'a₁', 'a₂', 'b₁', 'b₂']
 
+# -- Dictionary which defines a faithful representation of the Fuchsian group 
 Γ["e"] = np.array(
     [[F(1, 0), F(0, 0)], [F(0, 0), F(1, 0)]], dtype='object'
 )
@@ -46,7 +50,7 @@ inverse_generators = ['a₁⁻¹', 'a₂⁻¹', 'b₁⁻¹', 'b₂⁻¹', 'a₁'
 
 Γ['a₁⁻¹'] = np.array(
     [[F(2, -2), F(3, 0)],
-     [F(-3, 0), F(2, 2)]],
+    [F(-3, 0), F(2, 2)]],
     dtype='object'
 )
 
@@ -70,6 +74,10 @@ inverse_generators = ['a₁⁻¹', 'a₂⁻¹', 'b₁⁻¹', 'b₂⁻¹', 'a₁'
 
 
 class Fuchsian():
+    """
+        Represents an element of the Fuchsian group. It contains a word in its reduced form
+        and a faithful representation of the word as a member of GL(2,Z+√3Z).
+    """
 
     def __init__(self, word=None, mat=None, n=None):
 
@@ -92,6 +100,9 @@ class Fuchsian():
         self.reduce()
 
     def __repr__(self):
+        """
+            Pretty printing
+        """
         return ''.join(self.word)
 
     def reduce(self):
@@ -132,9 +143,16 @@ class Fuchsian():
         self.word = reduced_word
 
     def encode(self):
+        """
+            Generate a hash representation of the group element.
+            This can be used for fast search algorithms.
+        """
         self.hash = hash(str(self.mat))
 
     def parse_word(self):
+        """
+            Generate a faithful representation of the word.
+        """
 
         mats = [Γ[w] for w in self.word]
 
@@ -144,6 +162,9 @@ class Fuchsian():
             return mats[0]
 
     def __mul__(self, other):
+        """
+            Multiplication operator
+        """
 
         word = self.word + other.word
         mat = np.dot(self.mat, other.mat)
@@ -151,6 +172,9 @@ class Fuchsian():
         return Fuchsian(word, mat)
 
     def __mod__(self, k):
+        """
+            Modulo operator
+        """
 
         word = self.word
         mat = self.mat % k
@@ -158,10 +182,16 @@ class Fuchsian():
         return Fuchsian(word, mat)
 
     def __eq__(self, other):
+        """
+            Equality operator
+        """
         return self.hash == other.hash
 
     def dict(self):
-
+        """
+            Convert Fuchsian element to a dictionary. Can be used for
+            storing results.
+        """
         dictionary = {}
 
         dictionary['word'] = self.word
