@@ -1,6 +1,6 @@
 # Investigation of subgroup structure with GAP
 
-We use the computational group theory code `GAP` (https://www.gap-system.org/) to analyse the structure of normal subgroups of the free group.
+We use the computational group theory code `GAP` (https://www.gap-system.org/) to analyse the structure of normal subgroups of the free group on two generators.
 
 ## Requirements
 
